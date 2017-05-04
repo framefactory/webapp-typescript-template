@@ -30,7 +30,7 @@ npm --version
 # install global packages
 npm install -g webpack forever nodemon concurrently
 
-# some bash aliases
+# bash aliases
 cat <<EOF >> ~/.bash_aliases
 alias ll='ls -la'
 alias ..='cd ..'

@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "outDir": "../../services/server/bin",
+    "sourceMap": true,
+    "module": "commonjs",
+    "target": "es5",
+    "jsx": "react",
+    "allowJs": true
+  },
+  "include": [
+    "**/*"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}

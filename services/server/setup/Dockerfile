@@ -9,6 +9,7 @@ COPY *.sh /var/provisioning/
 WORKDIR /var/provisioning
 
 RUN apt-get update \
+ && apt-get upgrade -y \
  && apt-get install -y apt-utils \
  && apt-get install -y dos2unix \
  && dos2unix *
@@ -25,4 +26,4 @@ RUN apt-get -y autoremove \
  && rm -rf /var/lib/apt/lists/*
 
 # Entrypoint
-CMD bash -C '/var/provisioning/start.sh'
+CMD bash -C '/var/provisioning/run.sh'

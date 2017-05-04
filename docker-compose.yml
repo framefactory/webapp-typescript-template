@@ -4,15 +4,15 @@ services:
     image: webapp/server
     container_name: webapp-server
     build:
-      context: ./server/setup
+      context: ./services/server/setup
       dockerfile: Dockerfile
     env_file:
-      - ./services.env
+      - services/secrets.env
     ports:
       - "8000:8000"
       - "8001:8001"
     volumes:
-      - ./..:/app
+      - .:/app
     links:
       - db
     depends_on:
@@ -21,7 +21,7 @@ services:
     image: "arangodb/arangodb:latest"
     container_name: webapp-db
     env_file:
-      - ./services.env
+      - services/secrets.env
     ports:
       - "8529:8529"
     volumes:
