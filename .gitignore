@@ -1,0 +1,5 @@
+node_modules/
+typings/
+bin/
+.idea/
+.DS_Store

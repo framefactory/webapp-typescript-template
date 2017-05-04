@@ -1,0 +1,30 @@
+version: '2'
+services:
+  server:
+    image: webapp/server
+    container_name: webapp-server
+    build:
+      context: ./server/setup
+      dockerfile: Dockerfile
+    env_file:
+      - ./services.env
+    ports:
+      - "8000:8000"
+      - "8001:8001"
+    volumes:
+      - ./..:/app
+    links:
+      - db
+    depends_on:
+      - db
+  db:
+    image: "arangodb/arangodb:latest"
+    container_name: webapp-db
+    env_file:
+      - ./services.env
+    ports:
+      - "8529:8529"
+    volumes:
+      - webapp_db_data:/var/lib/arangodb3
+volumes:
+  webapp_db_data: {}
