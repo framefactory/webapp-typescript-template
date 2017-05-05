@@ -5,7 +5,7 @@ module.exports = {
     entry: path.resolve(__dirname, "bundles/main.tsx"),
     output: {
         filename: "application.js",
-        path: path.resolve(__dirname, "../../services/server/dist")
+        path: path.resolve(__dirname, "../../services/server/static/bundles")
     },
 
     // Enable sourcemaps for debugging webpack's output.

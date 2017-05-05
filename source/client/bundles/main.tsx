@@ -5,7 +5,7 @@ import * as ReactDOM from "react-dom";
 
 ReactDOM.render(
     (<div>
-        Hello World
+        Hello World 2
     </div>),
     document.getElementById("example")
 );
