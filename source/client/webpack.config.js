@@ -2,13 +2,15 @@ var path = require('path');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 module.exports = {
-    entry: path.resolve(__dirname, "bundles/main.tsx"),
+    entry: {
+        "main": path.resolve(__dirname, "bundles/main.tsx")
+    },
     output: {
-        filename: "application.js",
-        path: path.resolve(__dirname, "../../services/server/static/bundles")
+        path: path.resolve(__dirname, "../../services/server/static/app"),
+        filename: "[name].js"
     },
 
-    // Enable sourcemaps for debugging webpack's output.
+    // Enable source maps for debugging webpack's output.
     devtool: "source-map",
 
     resolve: {

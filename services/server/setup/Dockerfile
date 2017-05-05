@@ -15,7 +15,7 @@ RUN apt-get update \
  && dos2unix *
 
 # Run provisioning scripts
-RUN ./install.sh
+RUN bash -C './install.sh'
 
 # Set startup directory
 WORKDIR /app

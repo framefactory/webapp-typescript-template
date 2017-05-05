@@ -2,7 +2,7 @@ node_modules/
 typings/
 certs/
 bin/
-services/server/static/bundles/
+services/server/static/app/
 .idea/
 .DS_Store
 secrets.env

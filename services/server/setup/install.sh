@@ -27,9 +27,6 @@ nvm use 6.10.3
 node --version
 npm --version
 
-# install global packages
-npm install -g webpack forever nodemon concurrently
-
 # bash aliases
 cat <<EOF >> ~/.bash_aliases
 alias ll='ls -la'

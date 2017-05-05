@@ -2,10 +2,10 @@
   "compilerOptions": {
     "outDir": "../../services/server/bin",
     "sourceMap": true,
+    "lib": [ "DOM", "ES5", "ES2015" ],
     "module": "commonjs",
     "target": "es5",
-    "jsx": "react",
-    "allowJs": true
+    "jsx": "react"
   },
   "include": [
     "**/*"

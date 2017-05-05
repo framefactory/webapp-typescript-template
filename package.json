@@ -1,12 +1,18 @@
 {
   "name": "webapp",
   "version": "0.0.1",
+  "scripts": {
+    "server": "nodemon services/server/bin/index.js",
+    "server-dev": "concurrently \"tsc --watch -p source/server/tsconfig.json\" \"nodemon --debug --watch services/server/bin services/server/bin/index.js\""
+  },
   "dependencies": {
     "arangojs": "^5.6.1",
     "body-parser": "^1.17.1",
     "compression": "^1.6.2",
     "cookie-session": "^2.0.0-beta.1",
     "express": "^4.15.2",
+    "express-handlebars": "^3.0.0",
+    "morgan": "^1.8.1",
     "node-cmd": "^3.0.0",
     "passport": "^0.3.2",
     "passport-evernote": "^1.0.1",
@@ -23,9 +29,11 @@
     "@types/node": "^7.0.13",
     "@types/react": "^15.0.23",
     "awesome-typescript-loader": "^3.1.2",
+    "concurrently": "^3.4.0",
     "css-loader": "^0.28.0",
     "extract-text-webpack-plugin": "^2.1.0",
     "node-sass": "^4.5.2",
+    "nodemon": "^1.11.0",
     "react": "^15.5.4",
     "react-dom": "^15.5.4",
     "sass-loader": "^6.0.3",

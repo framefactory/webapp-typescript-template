@@ -8,7 +8,5 @@ source ~/.nvm/nvm.sh
 cd /app
 npm install
 
-# watch typescript source files and run tsc, then start server
-concurrently \
-    "./node_modules/.bin/tsc --watch -p source/server/tsconfig.json" \
-    "nodemon --watch services/server/bin services/server/bin/index.js"
+# start server in debug mode, watching source code changes
+npm run server-dev
