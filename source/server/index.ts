@@ -4,9 +4,11 @@ import * as http from "http";
 import * as https from "https";
 
 import * as express from "express";
+import * as session from "express-session";
 import * as compression from "compression";
 import * as bodyParser from "body-parser";
 import * as handlebars from "express-handlebars";
+import * as flash from "flash";
 
 import * as morgan from "morgan";
 import * as reload from "reload";
@@ -15,7 +17,9 @@ import * as cmd from "node-cmd";
 
 import { Database } from "arangojs";
 
-import authRouter from "./routers/auth";
+import users from "./collections/users";
+
+import authenticationRouting from "./routers/auth";
 import mainRouter from "./routers/main";
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -70,6 +74,7 @@ let db = new Database({ url: `http://root:${arangoPassword}@${arangoHost}:${aran
         }
         else {
             db.useDatabase(arangoDatabaseName);
+            users.initialize(db);
         }
     } catch(err) {
         console.log(err.stack);
@@ -88,15 +93,29 @@ if (devMode) {
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+// session handling
+app.use(session({
+    secret: "EZmhDif4Tc+ASesIBySeCQ",
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+        maxAge: 7 * 24 * 3600000 // one week
+    }
+}));
+
+app.use(flash());
+
+// public pages
 app.get("/", (req, res) => res.render("pages/index"));
 app.get("/login", (req, res) => res.render("pages/login"));
 
-// install routers
-app.use("/main", mainRouter);
-app.use("/auth", authRouter);
-
 // serve static files
-app.use("/", express.static(staticDir));
+app.use("/static", express.static(staticDir));
+
+// install routers
+app.use(authenticationRouting);
+app.use("/main", mainRouter);
+
 
 // gzip/deflate outgoing responses
 if (!devMode) {

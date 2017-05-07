@@ -4,5 +4,6 @@ certs/
 bin/
 services/server/static/app/
 .idea/
+*.log
 .DS_Store
 secrets.env
