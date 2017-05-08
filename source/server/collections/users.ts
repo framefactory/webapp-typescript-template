@@ -6,16 +6,14 @@ import Collection from "./Collection";
 export interface User
 {
     email: string;
-    firstName?: string;
-    lastName?: string;
-    userName?: string;
+    username: string;
 
     credentials: {
         local?: {
             password: string;
         },
         facebook?: {
-
+            id: string;
         }
     }
 }
@@ -29,17 +27,16 @@ class UserCollection extends Collection<User>
 
     protected static readonly template : User = {
         email: "",
-        firstName: "",
-        lastName: "",
-        userName: "",
+        username: "",
         credentials: {
             local: {
                 password: ""
             },
             facebook: {
+                id: ""
             }
         }
-    }
+    };
 
     hashPassword(password: string): Promise<string>
     {

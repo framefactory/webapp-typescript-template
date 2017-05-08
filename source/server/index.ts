@@ -19,7 +19,7 @@ import { Database } from "arangojs";
 
 import users from "./collections/users";
 
-import authenticationRouting from "./routers/auth";
+import authentication from "./routers/auth";
 import mainRouter from "./routers/main";
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -105,15 +105,26 @@ app.use(session({
 
 app.use(flash());
 
+// passport authentication
+app.use(authentication.router);
+
 // public pages
-app.get("/", (req, res) => res.render("pages/index"));
+app.get("/", (req: any, res) => {
+    if (req.user) {
+        return res.redirect("/main");
+    }
+    else {
+        return res.redirect("/login");
+    }
+});
+
 app.get("/login", (req, res) => res.render("pages/login"));
 
 // serve static files
 app.use("/static", express.static(staticDir));
 
 // install routers
-app.use(authenticationRouting);
+app.use(authentication.authorize);
 app.use("/main", mainRouter);
 
 

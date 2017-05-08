@@ -44,25 +44,32 @@ passport.deserializeUser((id, done) => {
 // PASSPORT FACEBOOK STRATEGY
 
 let FacebookStrategy = passportFacebook.Strategy;
-/*
+
 passport.use(new FacebookStrategy({
-        clientID: FACEBOOK_APP_ID,
-        clientSecret: FACEBOOK_APP_SECRET,
-        callbackURL: "https://framelab.io/auth/facebook/callback"
-    }, (accessToken, refreshToken, profile, done) => {
-        console.log("FACEBOOK USER PROFILE", profile);
-        users.findOne({ name: profile.name }).then((user) => {
+    clientID: process.env.FACEBOOK_APP_ID,
+    clientSecret: process.env.FACEBOOK_APP_SECRET,
+    callbackURL: "https://framelab.io/auth/facebook/callback"
+}, (accessToken, refreshToken, profile, done) => {
+    let username: string = profile.displayName || profile.username;
+    let id: string = profile.id;
+    console.log(`Authenticate Facebook User = ${username}, Id = ${id}`);
+
+    users.findOne({ credentials: { facebook: { id: id }}}).then(user => {
+        return done(null, user);
+    }).catch(err => {
+        let userInfo = {
+            username: username,
+            email: "",
+            credentials: { facebook: { id: id } }
+        };
+
+        users.create(userInfo).then((user) => {
             return done(null, user);
         }).catch(err => {
-            let user = {
-                email: <string>email,
-                credentials: { local: { password: hash } }
-            };
             return done(err, null);
-        });
-    }
-));
-*/
+        })
+    });
+}));
 
 ////////////////////////////////////////////////////////////////////////////////
 // AUTHENTICATION ROUTER
@@ -76,7 +83,7 @@ router.post("/auth/local", (req: any, res, next) => {
     if (req.body.action === "register") {
         let email = req.body.email;
         let password = req.body.password;
-        console.log(`register email=${email}, password=${password}`);
+        console.log(`Register Email = ${email}, Password = ${password}`);
 
         if (!email) {
             req.flash("error", "Missing email.");
@@ -90,6 +97,7 @@ router.post("/auth/local", (req: any, res, next) => {
         return users.hashPassword(password).then(hash => {
             let user = {
                 email: <string>email,
+                username: "",
                 credentials: { local: { password: hash } }
             };
 
@@ -119,13 +127,18 @@ router.get('/auth/facebook/callback', passport.authenticate('facebook', {
     failureFlash: true
 }));
 
-router.use((req: any, res, next) => {
+////////////////////////////////////////////////////////////////////////////////
+// AUTHORIZATION
+
+let authorize = function(req: any, res, next) {
     if (req.user) {
-        console.log("LOGGED IN: ", req.user);
+        console.log(`Authorized user: ${req.user.username || req.user.email}`);
         return next();
     }
 
-    return res.status(401).send("unauthorized");
-})
+    return res.redirect("/login");
+};
 
-export default router;
+export default { router: router, authorize: authorize };
+
+

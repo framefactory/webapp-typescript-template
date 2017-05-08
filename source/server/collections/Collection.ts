@@ -45,13 +45,13 @@ export default class Collection<DocumentData extends object>
         return this.collection.list("key");
     }
 
-    async create(document: DocumentData): Promise<string>
+    async create(document: DocumentData): Promise<DocumentData & DocumentIndex>
     {
         let data = this.validate({ }, document, /* replace */ true);
         data._key = (<DocumentData & DocumentIndex>document).id || genUuid();
 
         return this.collection.save(data).then(() => {
-            return data._key;
+            return this.read(data);
         });
     }
 
@@ -136,7 +136,7 @@ export default class Collection<DocumentData extends object>
         return <DocumentData & DocumentIndex>(document);
     }
 
-    validate(target: object, source: object, replace: boolean = false) : object & ArangoDocumentIndex
+    validate(target: object, source: object, replace: boolean = false) : DocumentData & ArangoDocumentIndex
     {
         return this._validate(target, source, this.template, replace);
     }
